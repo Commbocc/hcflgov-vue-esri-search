@@ -1,13 +1,19 @@
 {
-  "name": "vue-esri-search",
+  "name": "@hcflgov/vue-esri-search",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build --target lib --formats umd,umd-min --name HcEsriSearchForm",
+    "lint": "vue-cli-service lint",
+    "all": "npm run build && npm run styleguide:build",
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build"
   },
+  "main": "dist/HcEsriSearchForm.umd.min.js",
   "dependencies": {
+    "esri-loader": "^2.9.1",
+    "lodash.debounce": "^4.0.8",
     "vue": "^2.6.6"
   },
   "devDependencies": {
@@ -19,6 +25,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "vue-cli-plugin-styleguidist": "^3.11.4",
     "vue-template-compiler": "^2.5.21"
   }
 }
