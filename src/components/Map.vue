@@ -1,14 +1,17 @@
 <template lang="html">
   <div class="embed-responsive embed-responsive-16by9 mb-3" :class="mapClass">
-    <div id="mapView" class="embed-responsive-item"></div>
+    <div id="webMap" class="embed-responsive-item"></div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'esri-map',
+  methods: mapActions(['initMap']),
   mounted () {
-    this.$parent.initMap()
+    this.initMap()
   },
   props: {
     showMap: {
