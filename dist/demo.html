@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>HcEsriSearchForm Evacuation Zone Demo</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="./HcEsriSearchForm.umd.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/@hcflgov/vue-html-wrapper/dist/HcHtmlWrapper.css">
+  </head>
+  <body>
+
+    <div id="app" class="py-5 container">
+      <div class="card card-body v-card mb-3">
+        <hc-esri-search-form ref="searchForm" source-selector show-map @submit="reset" @result="handleResult"></hc-esri-search-form>
+      </div>
+      <pre>{{ $data }}</pre>
+    </div>
+
+    <script>
+    new Vue({
+      components: { HcEsriSearchForm },
+      data () {
+        return {
+          featAttrs: null,
+          evacFeat: {
+            url: 'https://services.arcgis.com/3wFbqsFPLeKqOlIK/ArcGIS/rest/services/EVACUATION_ZONES/FeatureServer/0',
+            outFields: ['EZone'],
+            popupTemplate: {
+              title: 'Evacuation Zone {EZone}'
+            }
+          }
+        }
+      },
+      mounted () {
+        this.$refs.searchForm.addLayer(this.evacFeat)
+        // this.$refs.searchForm.sourceIndex = 1
+        this.$refs.searchForm.userInput = '601 e kennedy'
+      },
+      methods: {
+        reset () {
+          this.featAttrs = null
+        },
+        handleResult (result) {
+          // console.log('demo result', result)
+          result.queryFeatures(this.evacFeat).then(feature => {
+            // console.log('query', feature)
+            this.featAttrs = feature.attributes
+          }).catch(err => {
+            console.warn('query error', err)
+          })
+        }
+      }
+    }).$mount('#app')
+    </script>
+
+  </body>
+</html>
