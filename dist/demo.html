@@ -13,7 +13,7 @@
 
     <div id="app" class="py-5 container">
       <div class="card card-body v-card mb-3">
-        <hc-esri-search-form ref="searchForm" source-selector show-map @submit="reset" @result="handleResult"></hc-esri-search-form>
+        <hc-esri-search-form ref="searchForm" source-selector show-map @submit="reset" @result="handleResult" @mapready="addLayers"></hc-esri-search-form>
       </div>
       <pre>{{ $data }}</pre>
     </div>
@@ -34,11 +34,13 @@
         }
       },
       mounted () {
-        this.$refs.searchForm.addLayer(this.evacFeat)
         // this.$refs.searchForm.sourceIndex = 1
         this.$refs.searchForm.userInput = '601 e kennedy'
       },
       methods: {
+        addLayers (addLayer) {
+          addLayer(this.evacFeat)
+        },
         reset () {
           this.featAttrs = null
         },

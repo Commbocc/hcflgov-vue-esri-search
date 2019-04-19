@@ -9,64 +9,69 @@
 
     <!-- status -->
     <small class="small form-text text-muted d-block">
-      {{ $store.state.status }} &nbsp;
+      {{ status }} &nbsp;
     </small>
 
     <!-- map -->
     <EsriMap v-if="sourceSelector || showMap" :show-map="showMap" ref="map" />
 
+    <!-- <pre>{{ $data }}</pre> -->
+
   </form>
 </template>
 
 <script>
-import AppMixin from './mixins/app'
+import * as components from './components'
+import mixins from './mixins'
 
 export default {
   name: 'hc-esri-search-form',
-  mixins: [AppMixin]
+  components: { ...components },
+  mixins,
+  props: {
+    /**
+    * Displays the search source radio selector
+    */
+    sourceSelector: {
+      type: Boolean,
+      default: false
+    },
+    /**
+    * Displays a map below the form
+    */
+    showMap: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    search () {
+      /**
+      * Triggered once the form is submitted, returns the instance of the component
+      * @type {Event}
+      */
+      this.$emit('submit', this)
+
+      this.fetchSearchResult().then(result => {
+        /**
+        * Triggered when a search returns a result, returns a `Promise`&lt;[SearchResponse](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#SearchResponse)&gt; with an added `queryFeatures` function.
+        * The `queryFeatures` fucntion accepts the following arguments and returns a `Promise`&lt;[FeatureSet](https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-FeatureSet.html)&gt;.
+        *
+        * @property {Object | String} feature an autocastable [Feature object](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#properties-summary) or a [FeatureLayer Url](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#url)
+        * @property {Object} queryParams an autocastable [Query object](https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-Query.html#properties-summary)
+        * @type {SearchResponse}
+        */
+        this.$emit('result', {
+          ...result,
+          queryFeatures: this.queryFeatures
+        })
+      })
+    }
+  },
+  data: () => ({
+    userInput: null,
+    loading: false,
+    status: null
+  })
 }
 </script>
-
-<docs>
-  ```html
-  <hc-esri-search-form ref="searchForm"
-  source-selector
-  show-map
-  @submit="reset"
-  @result="handleResult"
-  ></hc-esri-search-form>
-
-  <script>
-  new Vue({
-    components: { HcEsriSearchForm },
-    data: () => ({
-      feature: {
-        url: 'https://...',
-        outFields: ['*'],
-        // popupTemplate: {}
-      }
-    }),
-    mounted () {
-      // adds feature to map
-      // this.$refs.searchForm.addLayer(this.feature)
-
-      // dynamically set form data for testing purposes
-      // this.$refs.searchForm.sourceIndex = 1
-      this.$refs.searchForm.userInput = '101 My Address'
-    },
-    methods: {
-      reset (e) {
-        // reset
-      },
-      handleResult (result) {
-        result.queryFeatures(this.feature).then(feature => {
-          console.log(feature)
-        }).catch(err => {
-          // no features
-        })
-      }
-    }
-  })
-  </script>
-  ```
-</docs>
