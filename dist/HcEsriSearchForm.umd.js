@@ -5005,12 +5005,12 @@ var component = normalizeComponent(
 )
 
 /* harmony default export */ var Sources = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"553e40dc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Input.vue?vue&type=template&id=00af311c&lang=html&
-var Inputvue_type_template_id_00af311c_lang_html_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group mb-0"},[_c('div',{staticClass:"input-group input-group-lg"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.$parent.userInput),expression:"$parent.userInput"}],staticClass:"form-control data-hj-whitelist",attrs:{"placeholder":_vm.$parent.searchSource.placeholder,"list":"suggestions","autocomplete":"off","required":""},domProps:{"value":(_vm.$parent.userInput)},on:{"keyup":_vm.suggest,"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.$parent, "userInput", $event.target.value)}}}),_c('datalist',{attrs:{"id":"suggestions"}},_vm._l((_vm.suggestions),function(s,i){return _c('option',{key:i,domProps:{"value":s.text}})}),0),_c('span',{staticClass:"input-group-append input-group-btn"},[_c('button',{staticClass:"btn text-white rounded-0",class:_vm.btnClass,attrs:{"type":"submit"}},[_c('i',{class:_vm.btnIcon}),_c('span',{staticClass:"d-none d-sm-inline-block"},[_vm._v("\n          "+_vm._s(_vm.btnText)+"\n        ")])])])])])}
-var Inputvue_type_template_id_00af311c_lang_html_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"553e40dc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Input.vue?vue&type=template&id=07097314&lang=html&
+var Inputvue_type_template_id_07097314_lang_html_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"form-group mb-0"},[_c('div',{staticClass:"input-group input-group-lg"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.$parent.userInput),expression:"$parent.userInput"}],staticClass:"form-control data-hj-whitelist rounded-0",attrs:{"placeholder":_vm.$parent.searchSource.placeholder,"list":"suggestions","autocomplete":"off","required":""},domProps:{"value":(_vm.$parent.userInput)},on:{"keyup":_vm.suggest,"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.$parent, "userInput", $event.target.value)}}}),_c('datalist',{attrs:{"id":"suggestions"}},_vm._l((_vm.suggestions),function(s,i){return _c('option',{key:i,domProps:{"value":s.text}})}),0),_c('span',{staticClass:"input-group-append input-group-btn"},[_c('button',{staticClass:"btn text-white rounded-0",class:_vm.btnClass,attrs:{"type":"submit"}},[_c('i',{class:_vm.btnIcon}),_c('span',{staticClass:"d-none d-sm-inline-block"},[_vm._v("\n          "+_vm._s(_vm.btnText)+"\n        ")])])])])])}
+var Inputvue_type_template_id_07097314_lang_html_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Input.vue?vue&type=template&id=00af311c&lang=html&
+// CONCATENATED MODULE: ./src/components/Input.vue?vue&type=template&id=07097314&lang=html&
 
 // EXTERNAL MODULE: ./node_modules/lodash.debounce/index.js
 var lodash_debounce = __webpack_require__("f7fe");
@@ -5060,7 +5060,7 @@ var lodash_debounce_default = /*#__PURE__*/__webpack_require__.n(lodash_debounce
   },
   computed: {
     btnClass: function btnClass() {
-      return this.$parent.loading ? 'btn-warning' : 'btn-secondary';
+      return this.$parent.loading ? 'btn-warning' : 'btn-secondary bg-secondary';
     },
     btnIcon: function btnIcon() {
       return this.$parent.loading ? 'fa fa-fw fa-spinner fa-spin' : 'fa fa-fw fa-search';
@@ -5082,8 +5082,8 @@ var lodash_debounce_default = /*#__PURE__*/__webpack_require__.n(lodash_debounce
 
 var Input_component = normalizeComponent(
   components_Inputvue_type_script_lang_js_,
-  Inputvue_type_template_id_00af311c_lang_html_render,
-  Inputvue_type_template_id_00af311c_lang_html_staticRenderFns,
+  Inputvue_type_template_id_07097314_lang_html_render,
+  Inputvue_type_template_id_07097314_lang_html_staticRenderFns,
   false,
   null,
   null,

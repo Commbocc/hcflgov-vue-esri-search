@@ -2,7 +2,7 @@
   <div class="form-group mb-0">
     <div class="input-group input-group-lg">
       <!-- user input -->
-      <input v-model="$parent.userInput" @keyup="suggest" :placeholder="$parent.searchSource.placeholder" list="suggestions" class="form-control data-hj-whitelist" autocomplete="off" required />
+      <input v-model="$parent.userInput" @keyup="suggest" :placeholder="$parent.searchSource.placeholder" list="suggestions" class="form-control data-hj-whitelist rounded-0" autocomplete="off" required />
 
       <!-- suggestions -->
       <datalist id="suggestions">
@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     btnClass () {
-      return (this.$parent.loading) ? 'btn-warning' : 'btn-secondary'
+      return (this.$parent.loading) ? 'btn-warning' : 'btn-secondary bg-secondary'
     },
     btnIcon () {
       return (this.$parent.loading) ? 'fa fa-fw fa-spinner fa-spin' : 'fa fa-fw fa-search'

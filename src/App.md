@@ -1,25 +1,23 @@
 ```html
-<hc-esri-search-form ref="searchForm"
-source-selector
-show-map
+<div is="HcEsriSearchForm" ref="searchForm"
+source-selector="true"
+show-map="true"
+v-bind:map-layers="[featureLayer]"
 @submit="reset"
 @result="handleResult"
-></hc-esri-search-form>
+></div>
 
 <script>
 new Vue({
   components: { HcEsriSearchForm },
   data: () => ({
-    feature: {
+    featureLayer: {
       url: 'https://...',
       outFields: ['*'],
       // popupTemplate: {}
     }
   }),
   mounted () {
-    // adds feature to map
-    // this.$refs.searchForm.addLayer(this.feature)
-
     // dynamically set form data for testing purposes
     // this.$refs.searchForm.sourceIndex = 1
     this.$refs.searchForm.userInput = '101 My Address'
