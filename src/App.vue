@@ -1,5 +1,5 @@
 <template lang="html">
-  <form @submit.prevent="search" class="">
+  <form v-if="esriLoaded" @submit.prevent="search" class="">
 
     <!-- source selector -->
     <Sources v-show="sourceSelector"/>
@@ -42,7 +42,17 @@ export default {
     showMap: {
       type: Boolean,
       default: false
+    },
+    /**
+    * Layers to add to the map
+    */
+    mapLayers: {
+      type: Array,
+      default: () => ([])
     }
+  },
+  created () {
+    this.initEsriModules()
   },
   methods: {
     search () {

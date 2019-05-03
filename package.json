@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --formats umd,umd-min --name HcEsriSearchForm",
     "lint": "vue-cli-service lint",
-    "all": "npm run build && npm run styleguide:build",
+    "build-all": "npm run build && npm run styleguide:build",
     "styleguide": "vue-cli-service styleguidist",
     "styleguide:build": "vue-cli-service styleguidist:build"
   },

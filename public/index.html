@@ -15,15 +15,19 @@
 
   <div  class="container py-5 bg-light rte">
 
-    <div id="evacuation">
-      <div class="card card-body v-card mb-3">
-        <hc-esri-search-form ref="searchForm" source-selector show-map @submit="reset" @result="handleResult" @mapready="addLayers"></hc-esri-search-form>
-      </div>
+    <div id="evacuation" class="card card-body v-card mb-3">
+      <h3>Evacuation Zone Test</h3>
+      <hc-esri-search-form ref="searchForm" show-map :map-layers="[evacFeat]" @submit="reset" @result="handleResult"></hc-esri-search-form>
+      <pre v-if="true" class="bg-dark text-light p-3">{{ $data }}</pre>
+    </div>
+
+    <div id="mobility" class="card card-body v-card mb-3">
+      <h3>Mobility/Park & School Districts Test</h3>
+      <hc-esri-search-form ref="searchForm" source-selector @submit="reset" @result="handleResult"></hc-esri-search-form>
       <pre v-if="true" class="bg-dark text-light p-3">{{ $data }}</pre>
     </div>
 
   </div>
-
 
   <!-- built files will be auto injected -->
 </body>
