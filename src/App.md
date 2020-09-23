@@ -1,39 +1,49 @@
 ```html
-<div is="HcEsriSearchForm" ref="searchForm"
-source-selector="true"
-show-map="true"
-v-bind:map-layers="[featureLayer]"
-@submit="reset"
-@result="handleResult"
-></div>
+<HcEsriSearchForm
+  ref="searchForm"
+  source-selector="true"
+  show-map="true"
+  :map-layers="[featureLayer]"
+  @submit="reset"
+  @result="handleResult"
+/>
+```
 
-<script>
-new Vue({
+```javascript
+import HcEsriSearchForm from '@hcflgov/esri-search-form'
+
+// esri FeatureLayer
+const featureLayer = {
+  url: 'https://...',
+  outFields: ['*'],
+  // popupTemplate: {}
+}
+
+export default {
   components: { HcEsriSearchForm },
-  data: () => ({
-    featureLayer: {
-      url: 'https://...',
-      outFields: ['*'],
-      // popupTemplate: {}
-    }
-  }),
-  mounted () {
+
+  mounted() {
     // dynamically set form data for testing purposes
-    // this.$refs.searchForm.sourceIndex = 1
     this.$refs.searchForm.userInput = '101 My Address'
+    // this.$refs.searchForm.sourceIndex = 1
   },
+
+  data: () => ({
+    featureAttributes: null,
+  }),
+
   methods: {
-    reset (e) {
-      // reset
+    reset() {
+      this.featureAttributes = null
     },
-    handleResult (result) {
-      result.queryFeatures(this.feature).then(feature => {
-        console.log(feature)
-      }).catch(err => {
+    async handleResult(results) {
+      try {
+        const { attributes } = await results.queryFeatures(featureLayer)
+        this.featureAttributes = attributes
+      } catch (error) {
         // no features
-      })
-    }
-  }
-})
-</script>
+      }
+    },
+  },
+}
 ```

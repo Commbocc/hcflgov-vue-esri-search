@@ -1,34 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title>hc-vue-esri-search</title>
-  <link rel="stylesheet" href="https://unpkg.com/@hcflgov/vue-html-wrapper/dist/HcHtmlWrapper.css">
-</head>
-<body>
-  <noscript>
-    <strong>We're sorry but hc-vue-esri-search doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-  </noscript>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title>hc-vue-esri-search</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@hcflgov/vue-html-wrapper/dist/HcHtmlWrapper.css"
+    />
+  </head>
+  <body class="bg-light">
+    <noscript>
+      <strong
+        >We're sorry but hc-vue-esri-search doesn't work properly without
+        JavaScript enabled. Please enable it to continue.</strong
+      >
+    </noscript>
 
-  <div  class="container py-5 bg-light rte">
+    <main class="container py-5 rte">
+      <!-- evacuation -->
+      <div id="evacuation" class="card card-body v-card mb-3">
+        <h3>Evacuation Zone Test</h3>
+        <hc-esri-search-form
+          ref="searchForm"
+          @submit="reset"
+          @result="handleResult"
+          show-map
+          :map-layers="[evacFeature]"
+        ></hc-esri-search-form>
 
-    <div id="evacuation" class="card card-body v-card mb-3">
-      <h3>Evacuation Zone Test</h3>
-      <hc-esri-search-form ref="searchForm" show-map :map-layers="[evacFeat]" @submit="reset" @result="handleResult"></hc-esri-search-form>
-      <pre v-if="true" class="bg-dark text-light p-3">{{ $data }}</pre>
-    </div>
+        Feature:
+        <pre class="bg-light text-dark p-3">{{ evacFeature }}</pre>
 
-    <div id="mobility" class="card card-body v-card mb-3">
-      <h3>Mobility/Park & School Districts Test</h3>
-      <hc-esri-search-form ref="searchForm" source-selector @submit="reset" @result="handleResult"></hc-esri-search-form>
-      <pre v-if="true" class="bg-dark text-light p-3">{{ $data }}</pre>
-    </div>
+        Results:
+        <pre class="bg-dark text-light p-3">{{ $data }}</pre>
+      </div>
 
-  </div>
+      <!-- mobility -->
+      <div id="mobility" class="card card-body v-card mb-3">
+        <h3>Mobility/Park & School Districts Test</h3>
+        <hc-esri-search-form
+          ref="searchForm"
+          source-selector
+          @submit="reset"
+          @result="handleResult"
+        ></hc-esri-search-form>
 
-  <!-- built files will be auto injected -->
-</body>
+        Features:
+        <pre class="bg-light text-dark p-3 mb-0">{{ mobilityFeat }}</pre>
+        <pre class="bg-light text-dark p-3 mt-0">{{ parkSchoolsFeat }}</pre>
+
+        Results:
+        <pre class="bg-dark text-light p-3">{{ $data }}</pre>
+      </div>
+    </main>
+
+    <!-- built files will be auto injected -->
+  </body>
 </html>
