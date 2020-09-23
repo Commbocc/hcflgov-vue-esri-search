@@ -2,7 +2,16 @@
   <div class="form-group mb-0">
     <div class="input-group input-group-lg">
       <!-- user input -->
-      <input v-model="$parent.userInput" @keyup="suggest" :placeholder="$parent.searchSource.placeholder" list="suggestions" class="form-control data-hj-whitelist rounded-0" autocomplete="off" required />
+      <input
+        :value="value"
+        @input="$emit('input', $event.target.value)"
+        @keyup="suggest"
+        :placeholder="placeholder"
+        list="suggestions"
+        class="form-control data-hj-whitelist rounded-0"
+        autocomplete="off"
+        required
+      />
 
       <!-- suggestions -->
       <datalist id="suggestions">
@@ -11,7 +20,11 @@
 
       <!-- submit button -->
       <span class="input-group-append input-group-btn">
-        <button class="btn text-white rounded-0" :class="btnClass" type="submit">
+        <button
+          class="btn text-white rounded-0"
+          :class="btnClass"
+          type="submit"
+        >
           <i :class="btnIcon"></i>
           <span class="d-none d-sm-inline-block">
             {{ btnText }}
@@ -26,27 +39,44 @@
 import debounce from 'lodash.debounce'
 
 export default {
-  data: () => ({
-    suggestions: []
-  }),
-  methods: {
-    suggest: debounce(function () {
-      this.suggestions = []
-      this.$parent.fetchSuggestions().then(results => {
-        this.suggestions = results
-      })
-    }, 300)
+  props: {
+    value: String,
   },
+
+  data: () => ({
+    suggestions: [],
+  }),
+
+  methods: {
+    suggest: debounce(async function() {
+      this.suggestions = []
+      try {
+        const widget = await this.$parent.searchWidget()
+        const { numResults, results } = await widget.suggest(this.value)
+        this.suggestions = numResults ? results[0].results : []
+      } catch (error) {
+        console.error(error.message)
+      }
+    }, 300),
+  },
+
   computed: {
-    btnClass () {
-      return (this.$parent.loading) ? 'btn-warning' : 'btn-secondary bg-secondary'
+    placeholder() {
+      return this.$parent.activeSearchSource
+        ? this.$parent.activeSearchSource.placeholder
+        : 'Search...'
     },
-    btnIcon () {
-      return (this.$parent.loading) ? 'fa fa-fw fa-spinner fa-spin' : 'fa fa-fw fa-search'
+    btnClass() {
+      return this.$parent.loading ? 'btn-warning' : 'btn-secondary bg-secondary'
     },
-    btnText () {
+    btnIcon() {
+      return this.$parent.loading
+        ? 'fa fa-fw fa-spinner fa-spin'
+        : 'fa fa-fw fa-search'
+    },
+    btnText() {
       return 'Find'
-    }
-  }
+    },
+  },
 }
 </script>
