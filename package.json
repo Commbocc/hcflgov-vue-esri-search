@@ -7,26 +7,26 @@
     "build": "vue-cli-service build --target lib --formats umd,umd-min --name HcEsriSearchForm",
     "lint": "vue-cli-service lint",
     "build-all": "npm run build && npm run styleguide:build",
-    "styleguide": "vue-cli-service styleguidist",
-    "styleguide:build": "vue-cli-service styleguidist:build"
+    "styleguide": "vue-styleguidist server",
+    "styleguide:build": "vue-styleguidist build"
   },
   "main": "dist/HcEsriSearchForm.umd.min.js",
   "dependencies": {
+    "core-js": "^3.6.5",
     "esri-loader": "^2.9.1",
     "lodash.debounce": "^4.0.8",
-    "vue": "^2.6.6"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-eslint": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.1.0",
-    "vue-cli-plugin-styleguidist": "^3.11.4",
-    "vue-template-compiler": "^2.5.21"
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-styleguidist": "^4.32.3",
+    "vue-template-compiler": "^2.6.11"
   },
+  "_id": "@hcflgov/vue-esri-search@1.1.1",
   "homepage": "https://github.com/Commbocc/hcflgov-vue-esri-search"
 }
