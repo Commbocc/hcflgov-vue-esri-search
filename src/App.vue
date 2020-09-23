@@ -67,7 +67,7 @@ export default {
     async search() {
       /**
        * Triggered once the form is submitted, returns the instance of the HcEsriSearchForm component
-       * @property {Object} HcEsriSearchForm
+       * @property {Object} this
        * @type {Event}
        */
       this.$emit('submit', this)

@@ -1,21 +1,16 @@
-```vue
-<template>
-  <div>
-    <HcEsriSearchForm
-      ref="searchForm"
-      source-selector="true"
-      show-map="true"
-      v-bind:map-layers="[featureLayer]"
-      @submit="reset"
-      @result="handleResult"
-    />
+```html
+<HcEsriSearchForm
+  ref="searchForm"
+  source-selector="true"
+  show-map="true"
+  :map-layers="[featureLayer]"
+  @submit="reset"
+  @result="handleResult"
+/>
+```
 
-    <pre>{{ $data }}</pre>
-  </div>
-</template>
-
-<script>
-// import HcEsriSearchForm from '@hcflgov/esri-search-form'
+```javascript
+import HcEsriSearchForm from '@hcflgov/esri-search-form'
 
 // esri FeatureLayer
 const featureLayer = {
@@ -51,5 +46,4 @@ export default {
     },
   },
 }
-</script>
 ```

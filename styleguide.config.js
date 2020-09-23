@@ -6,13 +6,9 @@ module.exports = {
   usageMode: 'expand',
   styleguideDir: 'docs',
   ignore: [],
-  // sections: [
-  //   {
-  //     name: 'First Section',
-  //     components: 'src/components/**/[A-Z]*.vue'
-  //   }
-  // ],
-  // webpackConfig: {
-  //   // custom config goes here
-  // }
+  compilerConfig: {
+    transforms: {
+      asyncAwait: false,
+    },
+  },
 }
