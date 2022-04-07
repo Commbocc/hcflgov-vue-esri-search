@@ -1,143 +1,155 @@
-<template lang="html">
-  <form @submit.prevent="search" class="">
-    <!-- source selector -->
-    <Sources
-      v-model="searchSourceIndex"
-      v-show="sourceSelector"
-      ref="sources"
-    />
+<script setup lang="ts">
+import {
+  // search component
+  SearchBootstrap,
 
-    <!-- search widget -->
-    <Input v-model="userInput" ref="input" />
+  // composition api
+  featureLayerProps,
+  queryFeatures,
 
-    <!-- status -->
-    <small class="small form-text text-muted d-block">
-      {{ status }} &nbsp;
-    </small>
+  // optional
+  input,
+  searchProps,
+  searchResults,
+  suggestions,
+  features,
+} from './lib'
 
-    <!-- map -->
-    <EsriMap :show-map="showMap" :map-layers="mapLayers" ref="map" />
+// set feature layer url to query against
+featureLayerProps.url =
+  'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Counties/FeatureServer/0'
 
-    <!-- <pre>{{ $data }}</pre> -->
-  </form>
+// SearchBootstrap's submit event
+const watchResults = async (
+  results: __hc_esri_search.IReactiveSearchResults['data']
+) => {
+  try {
+    if (!results) throw 'No Search Results'
+    const [firstResult] = results
+
+    // query result's extent agains feature layer
+    const queriedFeatures = await queryFeatures(firstResult?.extent, {
+      // returnGeometry: true,
+    })
+
+    console.log('fun with features!', queriedFeatures)
+  } catch (error) {
+    console.warn(error)
+  }
+}
+
+// set input value, useful for dev
+input.value = '601 E Kennedy Blvd, Tampa'
+// searchProps.activeSourceIndex = 1
+
+import { watch } from 'vue'
+watch(input, () => {
+  // searchResults.data = []
+  features.data = null
+})
+
+// demo options
+import { reactive } from 'vue'
+const options = reactive({
+  size: 1,
+  sources: 0,
+})
+</script>
+
+<!--  -->
+
+<template>
+  <SearchBootstrap
+    id="form"
+    :small="options.size === 0"
+    :large="options.size === 2"
+    :hc-sources="options.sources === 1"
+    @results="watchResults"
+  />
+
+  <section class="bg-secondary p-3 mt-5">
+    <div class="d-grid gap-2 mb-3">
+      <a href="./docs/" target="_blank" class="btn btn-sm btn-light">
+        Documentation
+      </a>
+    </div>
+
+    <details open class="card">
+      <summary class="card-header">Options</summary>
+
+      <div class="card-body">
+        <label class="form-label w-100">Use HC Search Sources</label>
+        <div
+          v-for="(bool, i) in ['false', 'true']"
+          class="form-check form-check-inline"
+        >
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            :id="`hc-sources-${i}`"
+            :value="i"
+            v-model="options.sources"
+          />
+          <label class="form-check-label" :for="`hc-sources-${i}`">
+            {{ bool }}
+          </label>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <label for="featureLayerUrl" class="form-label">
+          Feature Layer URL to query
+        </label>
+        <input
+          type="email"
+          class="form-control"
+          id="featureLayerUrl"
+          placeholder="https://..."
+          v-model="featureLayerProps.url"
+        />
+      </div>
+
+      <div class="card-body">
+        <label class="form-label w-100">Size</label>
+        <div
+          v-for="(size, i) in ['small', 'medium', 'large']"
+          class="form-check form-check-inline"
+        >
+          <input
+            class="form-check-input"
+            type="radio"
+            name="size"
+            :id="`size-${size}`"
+            :value="i"
+            v-model="options.size"
+          />
+          <label class="form-check-label" :for="`size-${size}`">{{
+            size
+          }}</label>
+        </div>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary class="card-header">Suggestions</summary>
+      <pre class="card-body">{{ suggestions }}</pre>
+    </details>
+
+    <details class="card">
+      <summary class="card-header">Search Results</summary>
+      <pre class="card-body">{{ searchResults }}</pre>
+    </details>
+
+    <details open class="card">
+      <summary class="card-header">Queried Features</summary>
+      <pre id="queriedFeatures" class="card-body">{{ features }}</pre>
+    </details>
+  </section>
 </template>
 
-<script>
-import { Sources, Input, EsriMap } from './components'
-import Esri from './util/esri'
-
-export default {
-  name: 'hc-esri-search-form',
-
-  components: { Sources, Input, EsriMap },
-
-  props: {
-    /**
-     * Displays the search source radio selector
-     */
-    sourceSelector: {
-      type: Boolean,
-      default: false,
-    },
-    /**
-     * Displays a map below the form
-     */
-    showMap: {
-      type: Boolean,
-      default: false,
-    },
-    /**
-     * Layers to add to the map
-     */
-    mapLayers: {
-      type: Array,
-      default: () => [],
-    },
-  },
-
-  data: () => ({
-    userInput: null,
-    loading: false,
-    status: null,
-    searchSourceIndex: 0,
-    searchResult: null,
-  }),
-
-  methods: {
-    async search() {
-      /**
-       * Triggered once the form is submitted, returns the instance of the HcEsriSearchForm component
-       * @property {Object} this
-       * @type {Event}
-       */
-      this.$emit('submit', this)
-
-      this.searchResult = null
-      this.loading = true
-      this.status = `Searching for ${this.activeSearchSource.name}: ${this.userInput}...`
-
-      const widget = await this.searchWidget()
-
-      const { numResults, results } = await widget.search(this.userInput)
-
-      if (numResults) {
-        this.status = null
-        this.searchResult = results[0].results[0]
-        /**
-         * Triggered when a search returns a result, returns a `Promise`&lt;[SearchResponse](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#SearchResponse)&gt; with the `queryFeatures` method added as a property.
-         *
-         * @property {Object} results
-         * @type {Object}
-         */
-        this.$emit('result', {
-          result: this.searchResult,
-          queryFeatures: this.queryFeatures,
-        })
-      } else {
-        this.status = 'No Search Results Found'
-      }
-
-      this.loading = false
-    },
-
-    /**
-     * The `queryFeatures` fucntion accepts the following parameters and returns a `Promise`&lt;[FeatureSet](https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-FeatureSet.html)&gt;.
-     *  @param {FeatureLayer} feature an autocastable [Feature object](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#properties-summary)
-     *  @param {Boolean} single retruns an array of features if set to false. defaults to true
-     * @public
-     * */
-    async queryFeatures(feature, single = true) {
-      const { FeatureLayer } = await Esri()
-      const { features } = await new FeatureLayer(feature).queryFeatures({
-        returnGeometry: true,
-        outFields: feature.outFields || ['*'],
-        geometry: this.searchResult.feature.geometry,
-      })
-
-      if (!features.length) return single ? null : []
-
-      if (this.showMap && this.$refs.map) {
-        this.$refs.map.openMapPopup(features)
-      }
-
-      return single ? features[0] : features
-    },
-
-    async searchWidget() {
-      const { Search } = await Esri()
-      return new Search({
-        sources: this.$refs.sources.searchSources,
-        activeSourceIndex: this.searchSourceIndex,
-        includeDefaultSources: false,
-        view: this.$refs.map ? this.$refs.map.mapview : null,
-      })
-    },
-  },
-
-  computed: {
-    activeSearchSource() {
-      return this.$refs.sources.searchSources[this.searchSourceIndex]
-    },
-  },
+<style>
+details:not(:last-child) {
+  margin-bottom: 1rem;
 }
-</script>
+</style>
