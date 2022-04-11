@@ -1,12 +1,19 @@
-export const locator: __hc_esri_search.ILocatorSearchSourceProperties = {
-  name: 'Address',
-  placeholder: 'Search by Address',
-  url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/Composite_Address_Locator_Overall/GeocodeServer',
-  singleLineFieldName: 'SingleLine',
-  minSuggestCharacters: 2,
-}
+/**
+ * [LocatorSearchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-LocatorSearchSource.html)
+ */
+export const hcLocatorSource: __hc_esri_search.ILocatorSearchSourceProperties =
+  {
+    name: 'Address',
+    placeholder: 'Search by Address',
+    url: 'https://maps.hillsboroughcounty.org/arcgis/rest/services/Geocoding/Composite_Address_Locator_Overall/GeocodeServer',
+    singleLineFieldName: 'SingleLine',
+    minSuggestCharacters: 2,
+  }
 
-export const folio: __hc_esri_search.ILayerSearchSourceProperties = {
+/**
+ * [LayerSearchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-LayerSearchSource.html)
+ */
+export const hcFolioSource: __hc_esri_search.ILayerSearchSourceProperties = {
   name: 'Folio Number',
   placeholder: 'Search by Folio Number',
   layer: {

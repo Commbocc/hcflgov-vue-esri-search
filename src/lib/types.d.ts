@@ -1,6 +1,6 @@
 declare module __hc_esri_search {
   interface IReactive {
-    error: String | null
+    error?: String
     loading: boolean
   }
 
@@ -13,18 +13,19 @@ declare module __hc_esri_search {
   }
 
   interface IReactiveSearchResults extends IReactive {
-    status: String | null
-    data?: __esri.SearchResult[]
+    status?: String
+    data: __esri.SearchResult[]
   }
 
   interface IReactiveFeatures extends IReactive {
-    data: __esri.Graphic[] | null
+    data: __esri.Graphic[]
   }
 
   // sources
-  interface ISearchSourceProperties extends __esri.SearchSourceProperties {
+  interface ISearchSourceProperties {
     name: string
     placeholder: string
+    minSuggestCharacters?: number
   }
 
   interface ILayerSearchSourceProperties extends ISearchSourceProperties {

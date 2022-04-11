@@ -1,6 +1,6 @@
 {
   "name": "@hcflgov/vue-esri-search",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
   "scripts": {
     "dev": "vite",
@@ -16,7 +16,7 @@
     "dist"
   ],
   "main": "dist/hc-esri-search.es.js",
-  "types": "dist/lib/index.d.ts",
+  "types": "dist/types/lib/index.d.ts",
   "dependencies": {
     "@arcgis/core": "^4.22.2",
     "vue": "^3.2.25"
