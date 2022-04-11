@@ -54,7 +54,7 @@ Optionally add [Bootstrap](https://getbootstrap.com/docs/5.1/getting-started/int
   // SearchBootstrap's submit event
   const watchResults = async (results) => {
     try {
-      if (!results) throw 'No Search Results'
+      if (!results.length) throw 'No Search Results'
       const [firstResult] = results
 
       // query result's extent agains feature layer
@@ -77,5 +77,5 @@ Optionally add [Bootstrap](https://getbootstrap.com/docs/5.1/getting-started/int
 Using typescript?
 
 ```ts
-const watchResults = async (results: __esri.SearchResult[] | undefined) => {}
+const watchResults = async (results: __esri.SearchResult[]) => {}
 ```

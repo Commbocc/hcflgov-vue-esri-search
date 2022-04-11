@@ -9,7 +9,7 @@ import {
   search,
   searchResults,
 } from '../../lib'
-import { locator, folio } from '../../lib/search-sources'
+import { hcLocatorSource, hcFolioSource } from '../../lib/search-sources'
 
 const props =
   defineProps<{ small?: boolean; large?: boolean; hcSources?: boolean }>()
@@ -17,18 +17,17 @@ const props =
 watch(
   () => props.hcSources,
   () => {
-    searchProps.includeDefaultSources = props.hcSources ? false : true
-    searchProps.sources = props.hcSources ? [locator, folio] : undefined
+    searchProps.includeDefaultSources = !props.hcSources
+    searchProps.sources = props.hcSources
+      ? [hcLocatorSource, hcFolioSource]
+      : undefined
   },
   { immediate: true }
 )
 
 const emit =
   defineEmits<{
-    (
-      event: 'results',
-      data: __hc_esri_search.IReactiveSearchResults['data']
-    ): void
+    (event: 'results', data: __esri.SearchResult[]): void
   }>()
 
 const submit = async (event: Event) => {

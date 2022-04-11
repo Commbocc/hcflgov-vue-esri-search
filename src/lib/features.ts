@@ -11,9 +11,8 @@ export const featureLayerProps = reactive<__esri.FeatureLayerProperties>({})
  * @category Features
  */
 export const features = reactive<__hc_esri_search.IReactiveFeatures>({
-  error: null,
   loading: false,
-  data: null,
+  data: [],
 })
 
 /**
@@ -26,9 +25,9 @@ export const features = reactive<__hc_esri_search.IReactiveFeatures>({
 export async function queryFeatures(
   extent: Extent | object,
   options?: __esri.QueryProperties
-): Promise<__esri.Graphic[] | null> {
+): Promise<__esri.Graphic[]> {
   features.loading = true
-  features.data = null
+  features.data = []
 
   try {
     const featureLayer = new FeatureLayer(
@@ -46,9 +45,6 @@ export async function queryFeatures(
     features.data = queriedFeatures.map((f) => f.toJSON())
 
     return queriedFeatures
-  } catch (error) {
-    // console.warn(error)
-    return null
   } finally {
     features.loading = false
   }
