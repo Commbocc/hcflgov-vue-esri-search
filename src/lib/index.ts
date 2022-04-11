@@ -1,12 +1,5 @@
-import { ref } from 'vue'
-
-/**
- *
- */
-export const input = ref<string | null>(null)
-
-export * from './suggestions'
 export * from './search'
+export * from './suggestions'
 export * from './features'
 
 /**

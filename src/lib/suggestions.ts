@@ -1,12 +1,19 @@
-import { reactive, computed } from 'vue'
-import { input, esriSearchWidget } from '.'
+import { reactive, computed, watch } from 'vue'
+import { input, esriSearchWidget, searchProps } from './search'
 import { debounce } from './util'
+
+watch(
+  () => searchProps.activeSourceIndex,
+  () => {
+    input.value = ''
+    suggestions.data = []
+  }
+)
 
 /**
  * @category Suggestions
  */
 export const suggestions = reactive<__hc_esri_search.IReactiveSuggestions>({
-  error: null,
   loading: false,
   data: [],
 })
@@ -25,7 +32,7 @@ export async function _suggest() {
   if (!input.value) return
 
   suggestions.loading = true
-  suggestions.error = null
+  suggestions.error = undefined
 
   try {
     const { results: sourceResponses } = await esriSearchWidget.value.suggest(

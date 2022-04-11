@@ -20,11 +20,9 @@ featureLayerProps.url =
   'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Counties/FeatureServer/0'
 
 // SearchBootstrap's submit event
-const watchResults = async (
-  results: __hc_esri_search.IReactiveSearchResults['data']
-) => {
+const watchResults = async (results: __esri.SearchResult[]) => {
   try {
-    if (!results) throw 'No Search Results'
+    if (!results.length) throw 'No Search Results'
     const [firstResult] = results
 
     // query result's extent agains feature layer
@@ -45,7 +43,7 @@ input.value = '601 E Kennedy Blvd, Tampa'
 import { watch } from 'vue'
 watch(input, () => {
   // searchResults.data = []
-  features.data = null
+  features.data = []
 })
 
 // demo options

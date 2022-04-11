@@ -1,8 +1,11 @@
-import { reactive, computed, watch } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer'
 import Search from '@arcgis/core/widgets/Search'
-import { input } from '.'
-import { suggestions } from './suggestions'
+
+/**
+ *
+ */
+export const input = ref<string>('')
 
 /**
  * @watch When the __activeSourceIndex__ property is manipulated the {@link input} value is set to null and {@link suggestions} data is set to an empty array
@@ -13,29 +16,21 @@ export const searchProps = reactive<__hc_esri_search.IReactiveSearchProps>({
   activeSourceIndex: 0,
 })
 
-watch(
-  () => searchProps.activeSourceIndex,
-  () => {
-    input.value = null
-    suggestions.data = []
-  }
-)
-
 /**
  * An [Esri Search Widget](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html) built with {@link searchProps} as its properties
  *
  * @category Search
  */
-export const esriSearchWidget = computed(
+export const esriSearchWidget = computed<Search>(
   () =>
     new Search({
-      ...searchProps,
+      ...(searchProps as __hc_esri_search.IReactiveSearchProps),
       sources: searchProps.sources?.map((source) => {
         return source.layer
           ? { ...source, layer: new FeatureLayer(source.layer) }
           : source
       }),
-    } as __esri.widgetsSearchProperties)
+    })
 )
 
 /**
@@ -49,8 +44,6 @@ export const activeSource = computed(() => {
  * @category Search
  */
 export const searchResults = reactive<__hc_esri_search.IReactiveSearchResults>({
-  error: null,
-  status: null,
   loading: false,
   data: [],
 })
@@ -58,12 +51,9 @@ export const searchResults = reactive<__hc_esri_search.IReactiveSearchResults>({
 /**
  * @category Search
  */
-export async function search(): Promise<
-  __hc_esri_search.IReactiveSearchResults['data']
-> {
-  searchResults.status = null
-  if (!input.value) return
-
+export async function search(): Promise<__esri.SearchResult[]> {
+  searchResults.status = undefined
+  if (!input.value) throw 'Invalid input'
   searchResults.loading = true
   searchResults.status = 'Searching...'
 
@@ -74,7 +64,7 @@ export async function search(): Promise<
     const { results } = sourceResponses[0]
 
     searchResults.status = results.length
-      ? null
+      ? undefined
       : 'Your search returned no results.'
 
     searchResults.data = results.map(
@@ -90,6 +80,7 @@ export async function search(): Promise<
   } catch (error) {
     console.warn(error)
     searchResults.status = 'An error occurred when searching.'
+    return []
   } finally {
     searchResults.loading = false
   }
