@@ -12,7 +12,12 @@ import {
 import { hcLocatorSource, hcFolioSource } from '../../lib/search-sources'
 
 const props =
-  defineProps<{ small?: boolean; large?: boolean; hcSources?: boolean }>()
+  defineProps<{
+    small?: boolean
+    large?: boolean
+    hcSources?: boolean
+    hideSources?: boolean
+  }>()
 
 watch(
   () => props.hcSources,
@@ -38,7 +43,7 @@ const submit = async (event: Event) => {
 
 <template>
   <form @submit.prevent="submit">
-    <fieldset v-if="searchProps.sources?.length">
+    <fieldset v-if="searchProps.sources?.length" v-show="!hideSources">
       <legend>Search Source:</legend>
       <div
         v-for="(source, i) in searchProps.sources"

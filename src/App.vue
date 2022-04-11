@@ -38,6 +38,7 @@ const watchResults = async (results: __esri.SearchResult[]) => {
 
 // set input value, useful for dev
 input.value = '601 E Kennedy Blvd, Tampa'
+// input.value = '193557'
 // searchProps.activeSourceIndex = 1
 
 import { watch } from 'vue'
@@ -51,6 +52,7 @@ import { reactive } from 'vue'
 const options = reactive({
   size: 1,
   sources: 0,
+  hideSources: 0,
 })
 </script>
 
@@ -62,6 +64,7 @@ const options = reactive({
     :small="options.size === 0"
     :large="options.size === 2"
     :hc-sources="options.sources === 1"
+    :hide-sources="options.hideSources === 1"
     @results="watchResults"
   />
 
@@ -84,12 +87,32 @@ const options = reactive({
           <input
             class="form-check-input"
             type="radio"
-            name="inlineRadioOptions"
+            name="hc-sources"
             :id="`hc-sources-${i}`"
             :value="i"
             v-model="options.sources"
           />
           <label class="form-check-label" :for="`hc-sources-${i}`">
+            {{ bool }}
+          </label>
+        </div>
+      </div>
+
+      <div v-if="options.sources" class="card-body">
+        <label class="form-label w-100">Hide Sources</label>
+        <div
+          v-for="(bool, i) in ['false', 'true']"
+          class="form-check form-check-inline"
+        >
+          <input
+            class="form-check-input"
+            type="radio"
+            name="hide-sources"
+            :id="`hide-sources-${i}`"
+            :value="i"
+            v-model="options.hideSources"
+          />
+          <label class="form-check-label" :for="`hide-sources-${i}`">
             {{ bool }}
           </label>
         </div>
