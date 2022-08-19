@@ -68,11 +68,11 @@ export async function search(): Promise<__esri.SearchResult[]> {
       : 'Your search returned no results.'
 
     searchResults.data = results.map(
-      ({ name, extent }) =>
+      ({ name, extent, feature }) =>
         ({
           name,
           extent: extent.toJSON(),
-          //   feature: feature.toJSON(),
+          feature: feature.toJSON(),
         } as __esri.SearchResult)
     )
 

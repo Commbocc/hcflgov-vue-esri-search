@@ -57,8 +57,8 @@ Optionally add [Bootstrap](https://getbootstrap.com/docs/5.1/getting-started/int
       if (!results.length) throw 'No Search Results'
       const [firstResult] = results
 
-      // query result's extent agains feature layer
-      const queriedFeatures = await queryFeatures(firstResult?.extent, {
+      // query result's geometry against feature layer
+      const queriedFeatures = await queryFeatures(firstResult?.feature?.geometry,, {
         // returnGeometry: true,
       })
 

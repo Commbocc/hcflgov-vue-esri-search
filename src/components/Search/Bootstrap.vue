@@ -11,13 +11,12 @@ import {
 } from '../../lib'
 import { hcLocatorSource, hcFolioSource } from '../../lib/search-sources'
 
-const props =
-  defineProps<{
-    small?: boolean
-    large?: boolean
-    hcSources?: boolean
-    hideSources?: boolean
-  }>()
+const props = defineProps<{
+  small?: boolean
+  large?: boolean
+  hcSources?: boolean
+  hideSources?: boolean
+}>()
 
 watch(
   () => props.hcSources,
@@ -30,10 +29,9 @@ watch(
   { immediate: true }
 )
 
-const emit =
-  defineEmits<{
-    (event: 'results', data: __esri.SearchResult[]): void
-  }>()
+const emit = defineEmits<{
+  (event: 'results', data: __esri.SearchResult[]): void
+}>()
 
 const submit = async (event: Event) => {
   const results = await search()

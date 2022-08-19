@@ -14,10 +14,7 @@ import {
   suggestions,
   features,
 } from './lib'
-
-// set feature layer url to query against
-featureLayerProps.url =
-  'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Counties/FeatureServer/0'
+import { reactive, watch } from 'vue'
 
 // SearchBootstrap's submit event
 const watchResults = async (results: __esri.SearchResult[]) => {
@@ -25,10 +22,13 @@ const watchResults = async (results: __esri.SearchResult[]) => {
     if (!results.length) throw 'No Search Results'
     const [firstResult] = results
 
-    // query result's extent agains feature layer
-    const queriedFeatures = await queryFeatures(firstResult?.extent, {
-      // returnGeometry: true,
-    })
+    // query result's geometry against feature layer
+    const queriedFeatures = await queryFeatures(
+      firstResult?.feature?.geometry,
+      {
+        // returnGeometry: true,
+      }
+    )
 
     console.log('fun with features!', queriedFeatures)
   } catch (error) {
@@ -36,24 +36,30 @@ const watchResults = async (results: __esri.SearchResult[]) => {
   }
 }
 
-// set input value, useful for dev
-input.value = '601 E Kennedy Blvd, Tampa'
-// input.value = '193557'
-// searchProps.activeSourceIndex = 1
-
-import { watch } from 'vue'
 watch(input, () => {
   // searchResults.data = []
   features.data = []
 })
 
 // demo options
-import { reactive } from 'vue'
 const options = reactive({
   size: 1,
   sources: 0,
   hideSources: 0,
 })
+
+// set feature layer url to query against
+featureLayerProps.url =
+  'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Counties/FeatureServer/0'
+input.value = '601 e kennedy'
+
+if (import.meta.env.DEV) {
+  featureLayerProps.url =
+    'https://maps.hillsboroughcounty.org/arcgis/rest/services/SolidWaste_Viewer/SolidWasteRouteSchedules/MapServer/2'
+  // input.value = '601 e kennedy'
+  // searchProps.activeSourceIndex = 0
+  options.sources = 1
+}
 </script>
 
 <!--  -->
